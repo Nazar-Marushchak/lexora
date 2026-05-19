@@ -1,7 +1,7 @@
 import { ProgressChart } from "#/components/dashboard/progress-chart";
 import { StartLearning } from "#/components/dashboard/start-learning";
 import { StatsCards } from "#/components/dashboard/stats-cards";
-import { UnitsGrid } from "#/components/dashboard/units-grid";
+import { UnitsGrid } from "#/components/units/units-grid";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/(dashboard)/")({
@@ -10,8 +10,8 @@ export const Route = createFileRoute("/(dashboard)/")({
 
 function RouteComponent() {
   return (
-    <div className="flex min-h-screen bg-background">
-      <main className="flex-1 overflow-auto">
+    <div className="flex min-h-screen">
+      <div className="flex-1 overflow-auto">
         <div className="container max-w-8xl p-6 lg:p-8 mx-auto">
           {/* Header */}
           <div className="mb-8">
@@ -37,7 +37,7 @@ function RouteComponent() {
           {/* Units Section */}
           <UnitsGrid />
         </div>
-      </main>
+      </div>
     </div>
   );
 }
