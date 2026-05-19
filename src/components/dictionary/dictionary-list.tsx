@@ -148,7 +148,7 @@ export function DictionaryList() {
       <DictionaryFilters
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
-        masteryFilter={masteryFilter}
+        // masteryFilter={masteryFilter}
         onMasteryFilterChange={setMasteryFilter}
         sortBy={sortBy}
         onSortChange={setSortBy}
