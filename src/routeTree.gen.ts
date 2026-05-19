@@ -12,6 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as StudyRouteImport } from './routes/study'
 import { Route as dashboardRouteRouteImport } from './routes/(dashboard)/route'
 import { Route as dashboardIndexRouteImport } from './routes/(dashboard)/index'
+import { Route as dashboardUnitsRouteImport } from './routes/(dashboard)/units'
+import { Route as dashboardSettingsRouteImport } from './routes/(dashboard)/settings'
+import { Route as dashboardDictionaryRouteImport } from './routes/(dashboard)/dictionary'
 
 const StudyRoute = StudyRouteImport.update({
   id: '/study',
@@ -27,27 +30,58 @@ const dashboardIndexRoute = dashboardIndexRouteImport.update({
   path: '/',
   getParentRoute: () => dashboardRouteRoute,
 } as any)
+const dashboardUnitsRoute = dashboardUnitsRouteImport.update({
+  id: '/units',
+  path: '/units',
+  getParentRoute: () => dashboardRouteRoute,
+} as any)
+const dashboardSettingsRoute = dashboardSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => dashboardRouteRoute,
+} as any)
+const dashboardDictionaryRoute = dashboardDictionaryRouteImport.update({
+  id: '/dictionary',
+  path: '/dictionary',
+  getParentRoute: () => dashboardRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/study': typeof StudyRoute
+  '/dictionary': typeof dashboardDictionaryRoute
+  '/settings': typeof dashboardSettingsRoute
+  '/units': typeof dashboardUnitsRoute
   '/': typeof dashboardIndexRoute
 }
 export interface FileRoutesByTo {
   '/study': typeof StudyRoute
+  '/dictionary': typeof dashboardDictionaryRoute
+  '/settings': typeof dashboardSettingsRoute
+  '/units': typeof dashboardUnitsRoute
   '/': typeof dashboardIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/(dashboard)': typeof dashboardRouteRouteWithChildren
   '/study': typeof StudyRoute
+  '/(dashboard)/dictionary': typeof dashboardDictionaryRoute
+  '/(dashboard)/settings': typeof dashboardSettingsRoute
+  '/(dashboard)/units': typeof dashboardUnitsRoute
   '/(dashboard)/': typeof dashboardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/study' | '/'
+  fullPaths: '/study' | '/dictionary' | '/settings' | '/units' | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/study' | '/'
-  id: '__root__' | '/(dashboard)' | '/study' | '/(dashboard)/'
+  to: '/study' | '/dictionary' | '/settings' | '/units' | '/'
+  id:
+    | '__root__'
+    | '/(dashboard)'
+    | '/study'
+    | '/(dashboard)/dictionary'
+    | '/(dashboard)/settings'
+    | '/(dashboard)/units'
+    | '/(dashboard)/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -78,14 +112,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof dashboardIndexRouteImport
       parentRoute: typeof dashboardRouteRoute
     }
+    '/(dashboard)/units': {
+      id: '/(dashboard)/units'
+      path: '/units'
+      fullPath: '/units'
+      preLoaderRoute: typeof dashboardUnitsRouteImport
+      parentRoute: typeof dashboardRouteRoute
+    }
+    '/(dashboard)/settings': {
+      id: '/(dashboard)/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof dashboardSettingsRouteImport
+      parentRoute: typeof dashboardRouteRoute
+    }
+    '/(dashboard)/dictionary': {
+      id: '/(dashboard)/dictionary'
+      path: '/dictionary'
+      fullPath: '/dictionary'
+      preLoaderRoute: typeof dashboardDictionaryRouteImport
+      parentRoute: typeof dashboardRouteRoute
+    }
   }
 }
 
 interface dashboardRouteRouteChildren {
+  dashboardDictionaryRoute: typeof dashboardDictionaryRoute
+  dashboardSettingsRoute: typeof dashboardSettingsRoute
+  dashboardUnitsRoute: typeof dashboardUnitsRoute
   dashboardIndexRoute: typeof dashboardIndexRoute
 }
 
 const dashboardRouteRouteChildren: dashboardRouteRouteChildren = {
+  dashboardDictionaryRoute: dashboardDictionaryRoute,
+  dashboardSettingsRoute: dashboardSettingsRoute,
+  dashboardUnitsRoute: dashboardUnitsRoute,
   dashboardIndexRoute: dashboardIndexRoute,
 }
 
