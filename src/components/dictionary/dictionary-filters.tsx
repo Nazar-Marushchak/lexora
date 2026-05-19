@@ -11,7 +11,7 @@ import { Search } from "lucide-react";
 interface DictionaryFiltersProps {
   searchQuery: string;
   onSearchChange: (query: string) => void;
-  masteryFilter: string;
+  // masteryFilter: string;
   onMasteryFilterChange: (value: string) => void;
   sortBy: string;
   onSortChange: (value: string) => void;
@@ -20,7 +20,6 @@ interface DictionaryFiltersProps {
 export function DictionaryFilters({
   searchQuery,
   onSearchChange,
-  masteryFilter,
   onMasteryFilterChange,
   sortBy,
   onSortChange,
@@ -32,15 +31,15 @@ export function DictionaryFilters({
         <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           placeholder="Search words..."
-          value={searchQuery}
-          onChange={(e) => onSearchChange(e.target.value)}
+          // value={searchQuery}
+          // onChange={(e) => onSearchChange(e.target.value)}
           className="border-border bg-card pl-10 text-foreground placeholder:text-muted-foreground focus-visible:border-primary/50 focus-visible:ring-primary/20"
         />
       </div>
 
       {/* Filters */}
       <div className="flex gap-2">
-        <Select value={masteryFilter} onValueChange={onMasteryFilterChange}>
+        <Select onValueChange={onMasteryFilterChange}>
           <SelectTrigger className="w-32 border-border bg-card text-foreground">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
