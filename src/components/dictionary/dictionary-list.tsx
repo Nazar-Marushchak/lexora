@@ -11,81 +11,81 @@ const mockWords: Word[] = [
     id: "1",
     word: "Serendipity",
     translation: "The occurrence of events by chance in a happy way",
-    partOfSpeech: "noun",
-    memoryStrength: 85,
+    partOfSpeech: "Noun",
     isFavorite: true,
+    status: "New",
   },
   {
     id: "2",
     word: "Ephemeral",
     translation: "Lasting for a very short time",
-    partOfSpeech: "adjective",
-    memoryStrength: 62,
+    partOfSpeech: "Adjective",
     isFavorite: false,
+    status: "New",
   },
   {
     id: "3",
     word: "Ubiquitous",
     translation: "Present, appearing, or found everywhere",
-    partOfSpeech: "adjective",
-    memoryStrength: 45,
+    partOfSpeech: "Adjective",
     isFavorite: true,
+    status: "New",
   },
   {
     id: "4",
     word: "Eloquent",
     translation: "Fluent or persuasive in speaking or writing",
-    partOfSpeech: "adjective",
-    memoryStrength: 78,
+    partOfSpeech: "Adjective",
     isFavorite: false,
+    status: "Hard",
   },
   {
     id: "5",
     word: "Resilient",
     translation: "Able to recover quickly from difficulties",
-    partOfSpeech: "adjective",
-    memoryStrength: 92,
+    partOfSpeech: "Adjective",
     isFavorite: true,
+    status: "Hard",
   },
   {
     id: "6",
     word: "Meticulous",
     translation: "Showing great attention to detail",
-    partOfSpeech: "adjective",
-    memoryStrength: 30,
+    partOfSpeech: "Adjective",
     isFavorite: false,
+    status: "Review",
   },
   {
     id: "7",
     word: "Procrastinate",
     translation: "To delay or postpone action",
-    partOfSpeech: "verb",
-    memoryStrength: 55,
+    partOfSpeech: "Verb",
     isFavorite: false,
+    status: "Mature",
   },
   {
     id: "8",
     word: "Mellifluous",
     translation: "Sweet or musical; pleasant to hear",
-    partOfSpeech: "adjective",
-    memoryStrength: 20,
+    partOfSpeech: "Adjective",
     isFavorite: false,
+    status: "Review",
   },
   {
     id: "9",
     word: "Quintessential",
     translation: "Representing the most perfect example",
-    partOfSpeech: "adjective",
-    memoryStrength: 70,
+    partOfSpeech: "Adjective",
     isFavorite: true,
+    status: "Learning",
   },
   {
     id: "10",
     word: "Nevertheless",
     translation: "In spite of that; notwithstanding",
-    partOfSpeech: "adverb",
-    memoryStrength: 88,
+    partOfSpeech: "Adverb",
     isFavorite: false,
+    status: "Learning",
   },
 ];
 
@@ -97,7 +97,7 @@ export function DictionaryList() {
 
   // Mock handlers - replace with your logic
   const handleAddWord = () => {
-    toast.success("Add word dialog", {
+    toast("Add word dialog", {
       description: "Implement your modal here",
     });
   };
@@ -136,8 +136,7 @@ export function DictionaryList() {
 
     const matchesMastery =
       masteryFilter === "all" ||
-      (masteryFilter === "mastered" && word.memoryStrength >= 80) ||
-      (masteryFilter === "learning" && word.memoryStrength < 80);
+      (masteryFilter === word.status.toLocaleLowerCase() && word.status);
 
     return matchesSearch && matchesMastery;
   });
@@ -148,7 +147,7 @@ export function DictionaryList() {
       <DictionaryFilters
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
-        // masteryFilter={masteryFilter}
+        masteryFilter={masteryFilter}
         onMasteryFilterChange={setMasteryFilter}
         sortBy={sortBy}
         onSortChange={setSortBy}
@@ -170,7 +169,7 @@ export function DictionaryList() {
         ) : (
           <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center">
             <div className="flex size-16 items-center justify-center rounded-full bg-muted">
-              <BookOpen className="size-8 text-muted-foreground" />
+              <BookOpen className="size-8 texord.statust-muted-foreground" />
             </div>
             <div>
               <p className="font-medium text-foreground">No words found</p>

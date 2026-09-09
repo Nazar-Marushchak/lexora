@@ -10,15 +10,22 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as StudyRouteImport } from './routes/study'
+import { Route as SessionRouteImport } from './routes/session'
 import { Route as dashboardRouteRouteImport } from './routes/(dashboard)/route'
 import { Route as dashboardIndexRouteImport } from './routes/(dashboard)/index'
 import { Route as dashboardUnitsRouteImport } from './routes/(dashboard)/units'
 import { Route as dashboardSettingsRouteImport } from './routes/(dashboard)/settings'
+import { Route as dashboardReviewRouteImport } from './routes/(dashboard)/review'
 import { Route as dashboardDictionaryRouteImport } from './routes/(dashboard)/dictionary'
 
 const StudyRoute = StudyRouteImport.update({
   id: '/study',
   path: '/study',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SessionRoute = SessionRouteImport.update({
+  id: '/session',
+  path: '/session',
   getParentRoute: () => rootRouteImport,
 } as any)
 const dashboardRouteRoute = dashboardRouteRouteImport.update({
@@ -40,6 +47,11 @@ const dashboardSettingsRoute = dashboardSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => dashboardRouteRoute,
 } as any)
+const dashboardReviewRoute = dashboardReviewRouteImport.update({
+  id: '/review',
+  path: '/review',
+  getParentRoute: () => dashboardRouteRoute,
+} as any)
 const dashboardDictionaryRoute = dashboardDictionaryRouteImport.update({
   id: '/dictionary',
   path: '/dictionary',
@@ -47,15 +59,19 @@ const dashboardDictionaryRoute = dashboardDictionaryRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
+  '/session': typeof SessionRoute
   '/study': typeof StudyRoute
   '/dictionary': typeof dashboardDictionaryRoute
+  '/review': typeof dashboardReviewRoute
   '/settings': typeof dashboardSettingsRoute
   '/units': typeof dashboardUnitsRoute
   '/': typeof dashboardIndexRoute
 }
 export interface FileRoutesByTo {
+  '/session': typeof SessionRoute
   '/study': typeof StudyRoute
   '/dictionary': typeof dashboardDictionaryRoute
+  '/review': typeof dashboardReviewRoute
   '/settings': typeof dashboardSettingsRoute
   '/units': typeof dashboardUnitsRoute
   '/': typeof dashboardIndexRoute
@@ -63,22 +79,40 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/(dashboard)': typeof dashboardRouteRouteWithChildren
+  '/session': typeof SessionRoute
   '/study': typeof StudyRoute
   '/(dashboard)/dictionary': typeof dashboardDictionaryRoute
+  '/(dashboard)/review': typeof dashboardReviewRoute
   '/(dashboard)/settings': typeof dashboardSettingsRoute
   '/(dashboard)/units': typeof dashboardUnitsRoute
   '/(dashboard)/': typeof dashboardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/study' | '/dictionary' | '/settings' | '/units' | '/'
+  fullPaths:
+    | '/session'
+    | '/study'
+    | '/dictionary'
+    | '/review'
+    | '/settings'
+    | '/units'
+    | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/study' | '/dictionary' | '/settings' | '/units' | '/'
+  to:
+    | '/session'
+    | '/study'
+    | '/dictionary'
+    | '/review'
+    | '/settings'
+    | '/units'
+    | '/'
   id:
     | '__root__'
     | '/(dashboard)'
+    | '/session'
     | '/study'
     | '/(dashboard)/dictionary'
+    | '/(dashboard)/review'
     | '/(dashboard)/settings'
     | '/(dashboard)/units'
     | '/(dashboard)/'
@@ -86,6 +120,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   dashboardRouteRoute: typeof dashboardRouteRouteWithChildren
+  SessionRoute: typeof SessionRoute
   StudyRoute: typeof StudyRoute
 }
 
@@ -96,6 +131,13 @@ declare module '@tanstack/react-router' {
       path: '/study'
       fullPath: '/study'
       preLoaderRoute: typeof StudyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/session': {
+      id: '/session'
+      path: '/session'
+      fullPath: '/session'
+      preLoaderRoute: typeof SessionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(dashboard)': {
@@ -126,6 +168,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof dashboardSettingsRouteImport
       parentRoute: typeof dashboardRouteRoute
     }
+    '/(dashboard)/review': {
+      id: '/(dashboard)/review'
+      path: '/review'
+      fullPath: '/review'
+      preLoaderRoute: typeof dashboardReviewRouteImport
+      parentRoute: typeof dashboardRouteRoute
+    }
     '/(dashboard)/dictionary': {
       id: '/(dashboard)/dictionary'
       path: '/dictionary'
@@ -138,6 +187,7 @@ declare module '@tanstack/react-router' {
 
 interface dashboardRouteRouteChildren {
   dashboardDictionaryRoute: typeof dashboardDictionaryRoute
+  dashboardReviewRoute: typeof dashboardReviewRoute
   dashboardSettingsRoute: typeof dashboardSettingsRoute
   dashboardUnitsRoute: typeof dashboardUnitsRoute
   dashboardIndexRoute: typeof dashboardIndexRoute
@@ -145,6 +195,7 @@ interface dashboardRouteRouteChildren {
 
 const dashboardRouteRouteChildren: dashboardRouteRouteChildren = {
   dashboardDictionaryRoute: dashboardDictionaryRoute,
+  dashboardReviewRoute: dashboardReviewRoute,
   dashboardSettingsRoute: dashboardSettingsRoute,
   dashboardUnitsRoute: dashboardUnitsRoute,
   dashboardIndexRoute: dashboardIndexRoute,
@@ -156,6 +207,7 @@ const dashboardRouteRouteWithChildren = dashboardRouteRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   dashboardRouteRoute: dashboardRouteRouteWithChildren,
+  SessionRoute: SessionRoute,
   StudyRoute: StudyRoute,
 }
 export const routeTree = rootRouteImport

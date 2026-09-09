@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,8 +14,17 @@ export interface Word {
   id: string;
   word: string;
   translation: string;
-  partOfSpeech: "noun" | "verb" | "adjective" | "adverb" | "phrase" | "other";
-  memoryStrength: number;
+  partOfSpeech:
+    | "Noun"
+    | "Verb"
+    | "Adjective"
+    | "Adverb"
+    | "Phrase"
+    | "Idiom"
+    | "Pronoun"
+    | "Preposition"
+    | "Other";
+  status: "New" | "Learning" | "Review" | "Hard" | "Mature";
   isFavorite: boolean;
 }
 
@@ -34,6 +42,9 @@ const partOfSpeechColors: Record<string, string> = {
   adjective: "bg-purple-500/15 text-purple-400 border-purple-500/30",
   adverb: "bg-pink-500/15 text-pink-400 border-pink-500/30",
   phrase: "bg-cyan-500/15 text-cyan-400 border-cyan-500/30",
+  idiom: "bg-cyan-500/15 text-cyan-400 border-cyan-500/30",
+  pronoun: "bg-cyan-500/15 text-cyan-400 border-cyan-500/30",
+  preposition: "bg-cyan-500/15 text-cyan-400 border-cyan-500/30",
   other: "bg-muted text-muted-foreground border-border",
 };
 
@@ -56,7 +67,7 @@ export function WordRow({
             variant="outline"
             className={cn(
               "shrink-0 text-xs capitalize",
-              partOfSpeechColors[word.partOfSpeech],
+              partOfSpeechColors[word.partOfSpeech.toLowerCase()],
             )}
           >
             {word.partOfSpeech}
@@ -68,12 +79,12 @@ export function WordRow({
       </div>
 
       {/* Memory Strength Indicator */}
-      <div className="hidden w-24 flex-col gap-1 sm:flex">
+      {/* <div className="hidden w-24 flex-col gap-1 sm:flex">
         <Progress value={word.memoryStrength} className="h-1.5 bg-muted" />
         <span className="text-xs text-muted-foreground">
           {word.memoryStrength}% mastered
         </span>
-      </div>
+      </div> */}
 
       {/* Action Buttons */}
       <div className="flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
