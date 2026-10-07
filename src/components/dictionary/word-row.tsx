@@ -1,5 +1,6 @@
-import { Button } from "@/components/ui/button";
+import { MoreHorizontal, Pencil, Star, Trash2, Volume2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -7,23 +8,27 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Volume2, Star, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+export const PARTS_OF_SPEECH = [
+	"Noun",
+	"Verb",
+	"Adjective",
+	"Adverb",
+	"Phrase",
+	"Idiom",
+	"Pronoun",
+	"Preposition",
+	"Other",
+] as const;
+
+export type PartOfSpeech = (typeof PARTS_OF_SPEECH)[number];
 
 export interface Word {
 	id: string;
 	word: string;
 	translation: string;
-	partOfSpeech:
-		| "Noun"
-		| "Verb"
-		| "Adjective"
-		| "Adverb"
-		| "Phrase"
-		| "Idiom"
-		| "Pronoun"
-		| "Preposition"
-		| "Other";
+	partOfSpeech: PartOfSpeech;
 	status: "New" | "Learning" | "Review" | "Hard" | "Mature";
 	isFavorite: boolean;
 }

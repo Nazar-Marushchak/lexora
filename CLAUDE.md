@@ -40,9 +40,11 @@ Commands: `npm run dev` (port 3000) · `build` · `test` · `lint` · `format` �
   It deliberately does **not** appear in `package.json` `imports`: Node requires
   those keys to start with `#` followed by a non-`/` character, so neither `@/*`
   nor `#/*` is a valid entry there.
-- Domain types currently live next to their components and are re-exported:
-  `Unit` (`units/unit-card.tsx`), `Word` (`dictionary/word-row.tsx`),
-  `FlashcardData` (`review/flashcard.tsx`).
+- Domain types are moving into `src/types/` — `Unit`/`UnitStatus` already live in
+  `src/types/unit.ts`. The rest are still colocated and re-exported from the
+  component that uses them: `Word`/`PartOfSpeech`/`PARTS_OF_SPEECH`
+  (`dictionary/word-row.tsx`), `FlashcardData` (`review/flashcard.tsx`). Move
+  them to `src/types/` when they grow a second consumer.
 - **`(dashboard)/route.tsx` owns the page shell** — the `h-screen` wrapper, the
   sidebar, and the single `<main>` scroll container. Child routes render content
   only, never their own `min-h-screen`/`<main>`. A page that wants an internal

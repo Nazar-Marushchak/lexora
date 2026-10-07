@@ -1,9 +1,12 @@
+import { BookOpen } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { DictionaryHeader } from "./dictionary-header";
 import { DictionaryFilters } from "./dictionary-filters";
-import { WordRow, type Word } from "./word-row";
-import { BookOpen } from "lucide-react";
+import { DictionaryHeader } from "./dictionary-header";
+import { useWordDialog } from "./use-word-dialog";
+import { WordDialog } from "./word-dialog";
+import type { WordFormErrors, WordFormValues } from "./word-form";
+import { type Word, WordRow } from "./word-row";
 
 // Mock data - replace with TanStack Query
 const mockWords: Word[] = [
@@ -94,14 +97,10 @@ export function DictionaryList() {
 	const [masteryFilter, setMasteryFilter] = useState("all");
 	const [sortBy, setSortBy] = useState("a-z");
 	const [words, setWords] = useState<Word[]>(mockWords);
+	const { isOpen, editingWord, openAdd, openEdit, close, onOpenChange } =
+		useWordDialog(words);
 
 	// Mock handlers - replace with your logic
-	const handleAddWord = () => {
-		toast("Add word dialog", {
-			description: "Implement your modal here",
-		});
-	};
-
 	const handlePlayAudio = (word: Word) => {
 		toast("Playing audio", { description: `Pronunciation of "${word.word}"` });
 	};
@@ -117,15 +116,44 @@ export function DictionaryList() {
 		);
 	};
 
-	const handleEdit = (word: Word) => {
-		toast("Edit word", { description: `Editing "${word.word}"` });
-	};
-
 	const handleDelete = (word: Word) => {
 		setWords((prev) => prev.filter((w) => w.id !== word.id));
 		toast.success("Word deleted", {
 			description: `"${word.word}" removed from dictionary`,
 		});
+	};
+
+	const handleWordSubmit = (
+		values: WordFormValues,
+	): WordFormErrors | undefined => {
+		// Only the parent can check this — the dialog doesn't know the word list.
+		// Skipping the row being edited keeps "save without changing the word"
+		// from reporting the word as a duplicate of itself.
+		const duplicate = words.find(
+			(w) =>
+				w.id !== editingWord?.id &&
+				w.word.toLowerCase() === values.word.toLowerCase(),
+		);
+
+		if (duplicate !== undefined) {
+			return { word: `"${duplicate.word}" is already in your dictionary.` };
+		}
+
+		if (editingWord !== undefined) {
+			setWords((prev) =>
+				prev.map((w) => (w.id === editingWord.id ? { ...w, ...values } : w)),
+			);
+		} else {
+			const newWord: Word = {
+				id: crypto.randomUUID(),
+				...values,
+				isFavorite: false,
+				status: "New",
+			};
+
+			setWords((prev) => [...prev, newWord]);
+		}
+		close();
 	};
 
 	// Simple client-side filtering for demo
@@ -143,7 +171,7 @@ export function DictionaryList() {
 
 	return (
 		<div className="flex h-full flex-col gap-6 overflow-hidden p-6">
-			<DictionaryHeader totalWords={words.length} onAddWord={handleAddWord} />
+			<DictionaryHeader totalWords={words.length} onAddWord={openAdd} />
 			<DictionaryFilters
 				searchQuery={searchQuery}
 				onSearchChange={setSearchQuery}
@@ -162,7 +190,7 @@ export function DictionaryList() {
 							word={word}
 							onPlayAudio={handlePlayAudio}
 							onToggleFavorite={handleToggleFavorite}
-							onEdit={handleEdit}
+							onEdit={openEdit}
 							onDelete={handleDelete}
 						/>
 					))
@@ -182,6 +210,13 @@ export function DictionaryList() {
 					</div>
 				)}
 			</div>
+
+			<WordDialog
+				open={isOpen}
+				onOpenChange={onOpenChange}
+				onSubmit={handleWordSubmit}
+				word={editingWord}
+			/>
 		</div>
 	);
 }
